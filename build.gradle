@@ -7,6 +7,7 @@ plugins {
     id "org.springframework.cloud.contract" version "2.2.3.RELEASE"
     id 'jacoco'
     id 'ru.uip.contract.specs' version '0.1'
+    id 'maven-publish'
 }
 
 group 'ru.uip'
@@ -23,8 +24,29 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation "ru.uip:model:1.0-SNAPSHOT"
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation "ru.uip:model:1.0-SNAPSHOT"
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+        testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+        testImplementation "io.rest-assured:spring-web-test-client:4.3.0"
+        testImplementation "io.rest-assured:rest-assured-all:4.3.0"
+        testImplementation "org.springframework.restdocs:spring-restdocs-restassured"
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-contract-dependencies:2.1.3.RELEASE"
+        }
     }
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
     testImplementation "io.rest-assured:spring-web-test-client:4.3.0"
@@ -38,6 +60,14 @@ dependencyManagement {
     }
 }
 
+configurations {
+    [apiElements, runtimeElements].each {
+        it.outgoing.artifacts.removeIf {
+            it.buildDependencies.getDependencies(null).contains(jar)
+        }
+        it.outgoing.artifact(bootJar)
+    }
+}
 
 openApiGenerate {
     generatorName = "asciidoc"
@@ -96,6 +126,15 @@ apiContractSpec {
     snippetsDir = "${buildDir}/generated-snippets/contract"
     outputDir = "${buildDir}/generated-snippets/specs"
 }
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+build.finalizedBy(publishToMavenLocal)
 
 build.dependsOn("asciidoctor")
 asciidoctor.dependsOn("generate-api-spec")
