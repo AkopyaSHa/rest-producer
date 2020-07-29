@@ -1,0 +1,25 @@
+---
+description: Успешное получение всех учетных записей
+name: Получение всех учетных записей
+request:
+  method: GET
+  url: /account/xml
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <accounts>
+        <account>
+            <accountNumber>1</accountNumber>
+            <accountName>MikeAccount</accountName>
+            <accountBalance>1000.0</accountBalance>
+            <accountStatus>ACTIVE</accountStatus>
+        </account>
+        <account>
+            <accountNumber>2</accountNumber>
+            <accountName>AlexAccount</accountName>
+            <accountBalance>200.0</accountBalance>
+            <accountStatus>INACTIVE</accountStatus>
+        </account>
+    </accounts>
