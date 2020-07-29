@@ -51,6 +51,6 @@ response:
     </jsonAccount>
   matchers:
     body:
-      - path: $.accountNumber
-        type: by_regex
-        value: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"
+    - path: /jsonAccount/accountNumber/text()
+      type: by_regex
+      value: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"

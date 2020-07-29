@@ -17,10 +17,11 @@ request:
     </createJsonAccount>
   matchers:
     body:
-      - path: $.accountBalance
+      - path: /jsonAccount/accountBalance/text()
         type: by_regex
         predefined: number
         regexType: as_double
+
 response:
   status: 200
   headers:
@@ -51,12 +52,7 @@ request:
         <accountBalance>900.0</accountBalance>
         <accountStatus>INACTIVE</accountStatus>
     </createJsonAccount>
-  matchers:
-    body:
-      - path: $.accountBalance
-        type: by_regex
-        predefined: number
-        regexType: as_double
+
 response:
   status: 200
   headers:

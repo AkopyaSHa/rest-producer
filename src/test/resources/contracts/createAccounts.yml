@@ -15,6 +15,7 @@ request:
     accountName: "DanielAccount"
     accountStatus: "ACTIVE"
     accountBalance: 2001
+
 response:
   status: 200
   headers:
@@ -50,6 +51,6 @@ response:
     accountBalance: 2001
   matchers:
     body:
-      - path: $.accountNumber
-        type: by_regex
-        value: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"
+    - path: $.accountNumber
+      type: by_regex
+      value: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"
