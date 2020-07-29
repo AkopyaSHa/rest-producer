@@ -40,7 +40,7 @@ public class AccountController {
                         .build());
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<JsonAccount> createOrUpdate(@RequestBody @Valid CreateJsonAccount account) {
         final JsonAccount updatedAccount = accountService.createOrUpdate(account);
         return ResponseEntity.ok(updatedAccount);
