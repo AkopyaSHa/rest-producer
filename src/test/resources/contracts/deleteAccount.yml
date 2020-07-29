@@ -27,5 +27,3 @@ request:
     Content-type: application/json
 response:
   status: 404
-  headers:
-    Content-Type: application/json

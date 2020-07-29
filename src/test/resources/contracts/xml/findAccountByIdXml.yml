@@ -1,0 +1,48 @@
+---
+description: >
+  В результате запроса на поиск аккаунта с номером 1 сервис возвращает XML объект аккаунта 1
+name: Поиск по номеру существующего аккаунта 1
+request:
+  method: GET
+  url: /account/xml/1
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <jsonAccount>
+        <accountNumber>1</accountNumber>
+        <accountName>MikeAccount</accountName>
+        <accountBalance>1000.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </jsonAccount>
+
+---
+description: >
+  В результате запроса на поиск аккаунта с номером 2 сервис возвращает XML объект аккаунта 2
+name: Поиск по номеру существующего аккаунта 2
+request:
+  method: GET
+  url: /account/xml/2
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <jsonAccount>
+        <accountNumber>2</accountNumber>
+        <accountName>AlexAccount</accountName>
+        <accountBalance>200.0</accountBalance>
+        <accountStatus>INACTIVE</accountStatus>
+    </jsonAccount>
+
+---
+description: >
+  Возвращает HTTP код 404 при попытке найти по номеру несуществующий аккаунт.
+  Тело ответа пустое.
+name: Попытка найти несуществующий аккаунт по номеру
+request:
+  method: GET
+  url: /account/xml/6
+response:
+  status: 404

@@ -42,5 +42,3 @@ request:
   url: /account/6
 response:
   status: 404
-  headers:
-    Content-Type: application/json
