@@ -1,72 +1,72 @@
 description: >
-  В теле запроса находятся номер аккаунта отправителя, получателя и сумма которую нужно перевести.
-  В теле ответа возвращаются Xml аккаунты отправителя и получателя.
-name: Перевод денег с первого аккаунта на второй 1
+  В запросе от клиента приходит Xml аккакунта с номером 1 и измененным полем баланса.
+  Сервис устанавливает новое значение баланса аккаунта.
+  В ответе сервис возвращает Xml c обновленным аккаунтом.
+name: Обновление баланса учетной записи 1
 request:
   method: POST
-  url: /transfer/xml
+  url: /account/xml
   headers:
     Content-type: application/xml
   body: |
-    <moneyTransfer>
-      <fromAccountNumber>1</fromAccountNumber>
-      <toAccountNumber>2</toAccountNumber>
-      <amount>100.0</amount>
-    </moneyTransfer>
+    <createJsonAccount>
+        <accountNumber>1</accountNumber>
+        <accountName>MikeAccount</accountName>
+        <accountBalance>900.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </createJsonAccount>
+  matchers:
+    body:
+      - path: $.accountBalance
+        type: by_regex
+        predefined: number
+        regexType: as_double
 response:
   status: 200
   headers:
     Content-Type: application/xml
   body: |
-    <moneyTransferResult>
-      <from>
+    <jsonAccount>
         <accountNumber>1</accountNumber>
         <accountName>MikeAccount</accountName>
         <accountBalance>900.0</accountBalance>
         <accountStatus>ACTIVE</accountStatus>
-      </from>
-      <to>
+    </jsonAccount>
+
+---
+description: >
+  В запросе от клиента приходит Xml аккакунта с номером 2 и измененным полем баланса.
+  Сервис устанавливает новое значение баланса аккаунта.
+  В ответе сервис возвращает Xml c обновленным аккаунтом.
+name: Обновление баланса учетной записи 2
+request:
+  method: POST
+  url: /account/xml
+  headers:
+    Content-type: application/xml
+  body: |
+    <createJsonAccount>
         <accountNumber>2</accountNumber>
         <accountName>AlexAccount</accountName>
-        <accountBalance>300.0</accountBalance>
+        <accountBalance>900.0</accountBalance>
         <accountStatus>INACTIVE</accountStatus>
-      </to>
-    </moneyTransferResult>
----
-description: >
-  Если в теле запроса указать сумму, при вычете которой баланс первого аккаунта станет отрицательным,
-  то сервис возвращает ошибку с кодом HTTP 400 и пустым телом ответа.
-name: Попытка перевода суммы превышающей баланс первого аккаунта 1
-request:
-  method: POST
-  url: /transfer/xml
-  headers:
-    Content-type: application/xml
-  body: |
-    <moneyTransfer>
-      <fromAccountNumber>1</fromAccountNumber>
-      <toAccountNumber>2</toAccountNumber>
-      <amount>11000.0</amount>
-    </moneyTransfer>
+    </createJsonAccount>
+  matchers:
+    body:
+      - path: $.accountBalance
+        type: by_regex
+        predefined: number
+        regexType: as_double
 response:
-  status: 400
+  status: 200
   headers:
     Content-Type: application/xml
----
-description: >
-  Если в теле запроса указать номер несуществующего аккаунта,
-  то сервис возвращает ошибку с кодом HTTP 404 и пустым телом ответа.
-name: Попытка указания номера несуществующего аккаунта 1
-request:
-  method: POST
-  url: /transfer/xml
-  headers:
-    Content-type: application/xml
   body: |
-    <moneyTransfer>
-      <fromAccountNumber>1</fromAccountNumber>
-      <toAccountNumber>3</toAccountNumber>
-      <amount>100.0</amount>
-    </moneyTransfer>
-response:
-  status: 404
+    <jsonAccount>
+        <accountNumber>2</accountNumber>
+        <accountName>AlexAccount</accountName>
+        <accountBalance>900.0</accountBalance>
+        <accountStatus>INACTIVE</accountStatus>
+    </jsonAccount>
+
+
