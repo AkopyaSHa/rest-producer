@@ -1,0 +1,56 @@
+request:
+  method: POST
+  url: /account/xml
+  headers:
+    Content-type: application/xml
+  body: |
+    <createJsonAccount>
+        <accountNumber>3</accountNumber>
+        <accountName>DanielAccount</accountName>
+        <accountBalance>2001.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </createJsonAccount>
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <jsonAccount>
+        <accountNumber>3</accountNumber>
+        <accountName>DanielAccount</accountName>
+        <accountBalance>2001.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </jsonAccount>
+
+---
+description: >
+  В запросе на создание можно не указывать номер аккаунта.
+  В этом случае сервис генеруриет номер в виде UUID.
+name: Создание аккаунта с автогенерируемым номером
+request:
+  method: POST
+  url: /account/xml
+  headers:
+    Content-type: application/xml
+  body: |
+    <createJsonAccount>
+        <accountName>RubenAccount</accountName>
+        <accountBalance>2001.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </createJsonAccount>
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <jsonAccount>
+        <accountNumber>5d716772-dd43-49ff-808d-e2668d45dc84</accountNumber>
+        <accountName>RubenAccount</accountName>
+        <accountBalance>2001.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </jsonAccount>
+  matchers:
+    body:
+      - path: $.accountNumber
+        type: by_regex
+        value: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"

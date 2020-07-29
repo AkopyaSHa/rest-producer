@@ -1,0 +1,72 @@
+description: >
+  В теле запроса находятся номер аккаунта отправителя, получателя и сумма которую нужно перевести.
+  В теле ответа возвращаются Xml аккаунты отправителя и получателя.
+name: Перевод денег с первого аккаунта на второй 1
+request:
+  method: POST
+  url: /transfer/xml
+  headers:
+    Content-type: application/xml
+  body: |
+    <moneyTransfer>
+      <fromAccountNumber>1</fromAccountNumber>
+      <toAccountNumber>2</toAccountNumber>
+      <amount>100.0</amount>
+    </moneyTransfer>
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <moneyTransferResult>
+      <from>
+        <accountNumber>1</accountNumber>
+        <accountName>MikeAccount</accountName>
+        <accountBalance>900.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+      </from>
+      <to>
+        <accountNumber>2</accountNumber>
+        <accountName>AlexAccount</accountName>
+        <accountBalance>300.0</accountBalance>
+        <accountStatus>INACTIVE</accountStatus>
+      </to>
+    </moneyTransferResult>
+---
+description: >
+  Если в теле запроса указать сумму, при вычете которой баланс первого аккаунта станет отрицательным,
+  то сервис возвращает ошибку с кодом HTTP 400 и пустым телом ответа.
+name: Попытка перевода суммы превышающей баланс первого аккаунта 1
+request:
+  method: POST
+  url: /transfer/xml
+  headers:
+    Content-type: application/xml
+  body: |
+    <moneyTransfer>
+      <fromAccountNumber>1</fromAccountNumber>
+      <toAccountNumber>2</toAccountNumber>
+      <amount>11000.0</amount>
+    </moneyTransfer>
+response:
+  status: 400
+  headers:
+    Content-Type: application/xml
+---
+description: >
+  Если в теле запроса указать номер несуществующего аккаунта,
+  то сервис возвращает ошибку с кодом HTTP 404 и пустым телом ответа.
+name: Попытка указания номера несуществующего аккаунта 1
+request:
+  method: POST
+  url: /transfer/xml
+  headers:
+    Content-type: application/xml
+  body: |
+    <moneyTransfer>
+      <fromAccountNumber>1</fromAccountNumber>
+      <toAccountNumber>3</toAccountNumber>
+      <amount>100.0</amount>
+    </moneyTransfer>
+response:
+  status: 404
