@@ -1,0 +1,72 @@
+description: >
+  В запросе от клиента приходит Xml аккакунта с номером 1 и измененным полем баланса.
+  Сервис устанавливает новое значение баланса аккаунта.
+  В ответе сервис возвращает Xml c обновленным аккаунтом.
+name: Обновление баланса учетной записи 1
+request:
+  method: POST
+  url: /account/xml
+  headers:
+    Content-type: application/xml
+  body: |
+    <createJsonAccount>
+        <accountNumber>1</accountNumber>
+        <accountName>MikeAccount</accountName>
+        <accountBalance>900.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </createJsonAccount>
+  matchers:
+    body:
+      - path: $.accountBalance
+        type: by_regex
+        predefined: number
+        regexType: as_double
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <jsonAccount>
+        <accountNumber>1</accountNumber>
+        <accountName>MikeAccount</accountName>
+        <accountBalance>900.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </jsonAccount>
+
+---
+description: >
+  В запросе от клиента приходит Xml аккакунта с номером 2 и измененным полем баланса.
+  Сервис устанавливает новое значение баланса аккаунта.
+  В ответе сервис возвращает Xml c обновленным аккаунтом.
+name: Обновление баланса учетной записи 2
+request:
+  method: POST
+  url: /account/xml
+  headers:
+    Content-type: application/xml
+  body: |
+    <createJsonAccount>
+        <accountNumber>2</accountNumber>
+        <accountName>AlexAccount</accountName>
+        <accountBalance>900.0</accountBalance>
+        <accountStatus>INACTIVE</accountStatus>
+    </createJsonAccount>
+  matchers:
+    body:
+      - path: $.accountBalance
+        type: by_regex
+        predefined: number
+        regexType: as_double
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <jsonAccount>
+        <accountNumber>2</accountNumber>
+        <accountName>AlexAccount</accountName>
+        <accountBalance>900.0</accountBalance>
+        <accountStatus>INACTIVE</accountStatus>
+    </jsonAccount>
+
+

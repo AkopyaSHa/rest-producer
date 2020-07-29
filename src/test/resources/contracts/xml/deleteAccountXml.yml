@@ -1,0 +1,31 @@
+description: >
+  При удалении сервис в теле ответа возращает Xml удаленного аккаунта.
+name: Удаление существующего аккаунта с номером 1
+request:
+  method: DELETE
+  url: /account/xml/1
+  headers:
+    Content-type: application/xml
+response:
+  status: 200
+  headers:
+    Content-Type: application/xml
+  body: |
+    <jsonAccount>
+        <accountNumber>1</accountNumber>
+        <accountName>MikeAccount</accountName>
+        <accountBalance>1000.0</accountBalance>
+        <accountStatus>ACTIVE</accountStatus>
+    </jsonAccount>
+---
+description: >
+  Если аккаунт с заданным номером не существует,
+  то сервис возвращает ошибку с кодом HTTP 404 и пустым телом ответа.
+name: Попытка удаления несуществующего аккаунта
+request:
+  method: DELETE
+  url: /account/xml/100
+  headers:
+    Content-type: application/xml
+response:
+  status: 404
